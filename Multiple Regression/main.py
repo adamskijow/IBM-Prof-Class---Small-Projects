@@ -15,6 +15,10 @@ def main():
     df = df.drop(['CYLINDERS', 'FUELCONSUMPTION_CITY', 'FUELCONSUMPTION_HWY','FUELCONSUMPTION_COMB',],axis=1)
     df.head(9) # take a look at the dataset
     axes = pd.plotting.scatter_matrix(df, alpha=0.2)
+    # To help with selecting predictive features that are not redundant, 
+    # consider the following scatter matrix, which shows the scatter plots for each pair of input features. 
+    # The diagonal of the matrix shows each feature's histogram.
+
     # need to rotate axis labels so we can read them
     for ax in axes.flatten():
         ax.xaxis.label.set_rotation(90)
@@ -24,12 +28,12 @@ def main():
     plt.tight_layout()
     plt.gcf().subplots_adjust(wspace=0, hspace=0)
     plt.show()
-
+    #Extract the required columns and convert the resulting dataframes to NumPy arrays.
     X = df.iloc[:,[0,1]].to_numpy()
     y = df.iloc[:,[2]].to_numpy()
 
     from sklearn import preprocessing
-
+    #subtract the mean and divide by the standard deviation. This is called standardization.
     std_scaler = preprocessing.StandardScaler()
     X_std = std_scaler.fit_transform(X)
 
@@ -106,7 +110,9 @@ def main():
     ax.set_title('Multiple Linear Regression of CO2 Emissions', fontsize='xx-large')
     plt.tight_layout()
     plt.show()
-
+    #Instead of making a 3D plot, which is difficult to interpret, 
+    #you can look at vertical slices of the 3D plot by plotting each variable separately
+    #as a best-fit line using the corresponding regression parameters.
     plt.scatter(X_train[:,0], y_train,  color='blue')
     plt.plot(X_train[:,0], coef_[0,0] * X_train[:,0] + intercept_[0], '-r')
     plt.xlabel("Engine size")
